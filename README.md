@@ -42,4 +42,3 @@
 
 ## 系统要求
 - Python 3.8+
-- Debian 12+/Ubuntu 22+
