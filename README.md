@@ -1,4 +1,4 @@
-# Telegram 个人管理机器人
+# Telegram 个人AI聊天机器人
 **tgbot** 是一个基于 [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) 和AI开发的 Telegram 个人使用AI聊天机器人。
 ## 功能列表
 
