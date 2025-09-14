@@ -31,6 +31,7 @@
 3.前往telegram的[@BotFather](https://t.me/@BotFather)获取bot密钥和[@userinfobot](https://t.me/@userinfobot)获取你的用户ID
  
 #运行
+
 1.克隆整个仓库并且给予tgbot.sh可执行权限
 
 2. 使用启动脚本:
