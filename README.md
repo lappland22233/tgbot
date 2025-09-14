@@ -20,15 +20,21 @@
 4. **其他功能**
    - `/addke <关键词> <回复>` - 添加关键词回复
    - `/mll <模型名称>` - 切换AI模型
-
-## 安装与运行
-
+   - '/boom <秒数>' - 设置bot消息自动删除 0为不删除
+     
+## 准备工作与运行
+#准备工作
+1.有一个能连接Telegram的电脑/服务器，如果需要24*7小时不间断运行推荐使用[AKILEcloud](https://akile.io/register?aff_code=f26ab36b-ff75-4ed4-82cc-cb5d5b81ec6a)的服务器，低价并且可靠性高。
+2.前往[阿里百炼大模型](https://dashi.aliyun.com/activity/ydsbl?userCode=1bdcekfy&clubBiz=subTask..12101003..10239..)注册并领取免费百万免费Token然后获取大模型APi密钥
+3.前往telegram的[@BotFather](https://t.me/@BotFather)获取bot密钥
+ 
+#运行
 1.克隆整个仓库并且给予tgbot.sh可执行权限
-
 2. 使用启动脚本:
 ```bash
 ./tgbot.sh
 ```
+3.根据要求填入对应密钥
 
 ## 系统要求
 - Python 3.8+
