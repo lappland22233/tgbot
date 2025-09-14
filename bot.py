@@ -95,7 +95,25 @@ class TelegramBot:
      
         self.app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), self.handle_message))
 
-     # ---- 工具方法 ----
+     # ---- 权限检查方法 ----
+    def _check_admin_permission(self, user_id: int) -> bool:
+        """检查用户是否有管理员权限"""
+        # 主管理员
+        if user_id == self.config.admin_id:
+            return True
+            
+        # 普通管理员
+        admins = self._safe_load('admin_file', [])
+        admins = [int(a) for a in admins]
+        return user_id in admins
+
+    def _get_user_id(self, update: Update) -> int | None:
+        """安全获取用户ID，如果无法获取返回None"""
+        if not update.effective_user:
+            return None
+        return update.effective_user.id
+
+    # ---- 工具方法 ----
     async def _reply(self, update: Update, text: str):
         try:
             sent_msg = None
@@ -128,6 +146,12 @@ class TelegramBot:
     async def set_boom_time(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """设置消息自毁时间"""
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not context.args:
                 await self._reply(update, f"当前自毁时间: {self.boom_time} 秒 (0=不删除)")
                 return
@@ -154,8 +178,8 @@ class TelegramBot:
     # ---- /rbq 命令实现 ----
     async def add_admin(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
-            user_id = update.effective_user.id
-            if user_id != self.config.admin_id:
+            user_id = self._get_user_id(update)
+            if user_id is None or user_id != self.config.admin_id:
                 await self._reply(update, "❌ 只有主管理员可以添加管理员")
                 return
 
@@ -187,8 +211,8 @@ class TelegramBot:
 
     async def remove_admin(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
-            user_id = update.effective_user.id
-            if user_id != self.config.admin_id:
+            user_id = self._get_user_id(update)
+            if user_id is None or user_id != self.config.admin_id:
                 await self._reply(update, "❌ 只有主管理员可以移除管理员")
                 return
 
@@ -240,6 +264,12 @@ class TelegramBot:
 
     async def authorize_group(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not self._is_supergroup_or_group(update):
                 await self._reply(update, "❌ 此命令只能在群组中使用")
                 return
@@ -261,6 +291,12 @@ class TelegramBot:
 
     async def deauthorize_group(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not self._is_supergroup_or_group(update):
                 await self._reply(update, "❌ 此命令只能在群组中使用")
                 return
@@ -282,6 +318,12 @@ class TelegramBot:
 
     async def add_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not context.args:
                 await self._reply(update, "用法: /addmpt <提示词>")
                 return
@@ -302,6 +344,12 @@ class TelegramBot:
 
     async def manage_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             prompts = self._safe_load('prompt_file', [])
             if not context.args:
                 if not prompts:
@@ -331,6 +379,12 @@ class TelegramBot:
 
     async def remove_prompt(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not context.args:
                 await self._reply(update, "用法: /unmpt <编号>")
                 return
@@ -356,6 +410,12 @@ class TelegramBot:
 
     async def manage_model(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not context.args:
                 await self._reply(update, f"当前模型: {self.current_model}")
                 return
@@ -380,6 +440,12 @@ class TelegramBot:
     async def list_keywords(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """展示关键词列表"""
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if hasattr(self.data_manager, 'get_keywords'):
                 keywords = self.data_manager.get_keywords()
             else:
@@ -401,6 +467,12 @@ class TelegramBot:
     async def remove_keyword(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """删除关键词"""
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not context.args:
                 await self._reply(update, "用法: /unke <编号>")
                 return
@@ -438,6 +510,12 @@ class TelegramBot:
 
     async def add_keyword(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         try:
+            # 权限检查
+            user_id = self._get_user_id(update)
+            if user_id is None or not self._check_admin_permission(user_id):
+                await self._reply(update, "❌ 只有管理员可以使用此命令")
+                return
+                
             if not context.args:
                 await self._reply(update, "用法: /addke <关键词>")
                 return
