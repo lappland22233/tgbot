@@ -23,17 +23,9 @@
 
 ## 安装与运行
 
-1. 安装依赖:
-```bash
-pip install -r requirements.txt
-```
+1.克隆整个仓库并且给予tgbot.sh可执行权限
 
-2. 首次运行配置:
-```bash
-python bot.py
-```
-
-3. 使用启动脚本:
+2. 使用启动脚本:
 ```bash
 ./tgbot.sh
 ```
