@@ -1,5 +1,5 @@
 # Telegram 个人管理机器人
-**tgbot** 是一个基于 [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) 和AI开发的 Telegram 个人管理机器人。
+**tgbot** 是一个基于 [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) 和AI开发的 Telegram 个人使用AI聊天机器人。
 ## 功能列表
 
 1. **管理员系统**
@@ -28,7 +28,7 @@
 
 2.前往[阿里百炼大模型](https://dashi.aliyun.com/activity/ydsbl?userCode=1bdcekfy&clubBiz=subTask..12101003..10239..)注册并领取免费百万免费Token然后获取大模型APi密钥
 
-3.前往telegram的[@BotFather](https://t.me/@BotFather)获取bot密钥
+3.前往telegram的[@BotFather](https://t.me/@BotFather)获取bot密钥和[@userinfobot](https://t.me/@userinfobot)获取你的用户ID
  
 #运行
 1.克隆整个仓库并且给予tgbot.sh可执行权限
